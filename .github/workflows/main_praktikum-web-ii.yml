@@ -23,16 +23,6 @@ jobs:
         with:
           php-version: '8.2'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install npm dependencies and build frontend
-        run: |
-          npm install
-          npm run build
-
       - name: Check if composer.json exists
         id: check_files
         uses: andstor/file-existence-action@v1
@@ -44,7 +34,7 @@ jobs:
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
 
       - name: Zip artifact for deployment
-        run: zip -r release . -x "node_modules/*" ".git/*"
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -74,9 +64,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8AD5BE0704014459803B4D7C87C98CCE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AF1A9A7EF4F9448AB771FC3044A55740 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_75596963D5E84CE287093F698071C86E }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2ACCFE3A95764072A02F4681625A377A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2E2686A3D5254DF0B2C966170506CDED }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D21F0FF3C4C44EBCA58792217636D242 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
